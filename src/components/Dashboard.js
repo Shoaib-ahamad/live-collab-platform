@@ -56,7 +56,7 @@ const ShareModal = ({ projectId, onClose, show }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-md">
-        <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Share Project</h3>
+        <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Share Document</h3>
         <form onSubmit={handleInvite}>
           <label htmlFor="share-email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Invite user by email:</label>
           <input type="email" id="share-email" value={email} onChange={(e) => setEmail(e.target.value)} required className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md shadow-sm" />
@@ -96,7 +96,7 @@ const Dashboard = ({ user, userName, onOpenProject }) => {
   }, []);
 
   const handleCreateProject = async () => {
-    const projectName = prompt("Enter project name:");
+    const projectName = prompt("Enter a name for your new document:");
     if (!projectName) return;
     const organizationId = prompt("Enter an Organization ID (this will act as a password):");
     if (!organizationId) return;
@@ -108,7 +108,7 @@ const Dashboard = ({ user, userName, onOpenProject }) => {
             ownerId: auth.currentUser.uid,
             ownerEmail: auth.currentUser.email,
             members: [auth.currentUser.uid],
-            code: `// Welcome to ${projectName}!\n`,
+            code: `Welcome to your new document: ${projectName}!\n`,
             createdAt: serverTimestamp(),
             presentUsers: []
         };
@@ -118,7 +118,7 @@ const Dashboard = ({ user, userName, onOpenProject }) => {
   };
 
   const handleOpenProjectWithPassword = async (projectId) => {
-    const enteredOrgId = prompt("Please enter the Organization ID to access this project:");
+    const enteredOrgId = prompt("Please enter the Organization ID to access this document:");
     if (!enteredOrgId) return;
 
     const projectRef = doc(db, "projects", projectId);
@@ -126,19 +126,19 @@ const Dashboard = ({ user, userName, onOpenProject }) => {
     if (projectSnap.exists() && projectSnap.data().organizationId === enteredOrgId) {
         onOpenProject(projectId);
     } else {
-        alert("Incorrect Organization ID or project not found.");
+        alert("Incorrect Organization ID or document not found.");
     }
   };
 
   const handleDeleteProject = async (projectId) => {
-    if (window.confirm("Are you sure you want to delete this project?")) {
+    if (window.confirm("Are you sure you want to delete this document?")) {
         await deleteDoc(doc(db, "projects", projectId));
         setProjects(projects.filter(p => p.id !== projectId));
     }
   };
 
   const handleRenameProject = async (projectId, currentName) => {
-    const newName = prompt("Enter new project name:", currentName);
+    const newName = prompt("Enter new document name:", currentName);
     if (newName && newName !== currentName) {
         const projectRef = doc(db, "projects", projectId);
         await updateDoc(projectRef, { name: newName });
@@ -153,7 +153,7 @@ const Dashboard = ({ user, userName, onOpenProject }) => {
 
   const filteredProjects = projects.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
-  if (loading) return <div className="p-8">Loading projects...</div>;
+  if (loading) return <div className="p-8">Loading documents...</div>;
 
   return (
     <>
@@ -162,14 +162,14 @@ const Dashboard = ({ user, userName, onOpenProject }) => {
         <div className="max-w-7xl mx-auto">
           <UserProfile user={user} userName={userName} />
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Your Projects</h2>
+            <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Your Documents</h2>
             <button onClick={handleCreateProject} className="bg-blue-600 text-white font-semibold px-5 py-2 rounded-md hover:bg-blue-700 flex items-center space-x-2">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
-              <span>Create New Project</span>
+              <span>New Document</span>
             </button>
           </div>
           <div className="mb-6">
-            <input type="text" placeholder="Search projects..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md shadow-sm" />
+            <input type="text" placeholder="Search documents..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md shadow-sm" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProjects.length > 0 ? (
@@ -192,7 +192,7 @@ const Dashboard = ({ user, userName, onOpenProject }) => {
                   </div>
                 </div>
               ))
-            ) : (<p className="text-gray-500 dark:text-gray-400 col-span-full text-center">No projects found.</p>)}
+            ) : (<p className="text-gray-500 dark:text-gray-400 col-span-full text-center">No documents found.</p>)}
           </div>
         </div>
       </div>
