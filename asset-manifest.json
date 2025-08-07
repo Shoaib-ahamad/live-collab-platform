@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/live-collab-platform/static/css/main.c350d9c5.css",
+    "main.js": "/live-collab-platform/static/js/main.f0860090.js",
+    "static/js/453.de3760d2.chunk.js": "/live-collab-platform/static/js/453.de3760d2.chunk.js",
+    "index.html": "/live-collab-platform/index.html",
+    "main.c350d9c5.css.map": "/live-collab-platform/static/css/main.c350d9c5.css.map",
+    "main.f0860090.js.map": "/live-collab-platform/static/js/main.f0860090.js.map",
+    "453.de3760d2.chunk.js.map": "/live-collab-platform/static/js/453.de3760d2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c350d9c5.css",
+    "static/js/main.f0860090.js"
+  ]
+}
